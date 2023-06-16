@@ -1,0 +1,26 @@
+<h1>Demo of SSE connection in Rails</h1>
+<button onclick="connectToSSE()">Connect to SSE</button>
+<br>
+<h2 style="margin-bottom: 0.25rem;">Messages from server</h2>
+<div id="messages" style="border: 1px solid black; min-height: 100px; padding: 0.5rem;"></div>
+
+<script>
+  const connectToSSE = () => {
+    const source = new EventSource("/sse");
+    source.onopen = (event) => {
+      console.log("Connected to /sse");
+    };
+    source.onerror = (event) => {
+      if (source.CLOSED) {
+        console.log("Disconnected from /sse");
+        source.close();
+      } else {
+        console.log("Error connecting to /sse", event);
+      }
+    };
+    source.onmessage = (event) => {
+      console.log(event.data);
+      document.getElementById("messages").innerHTML += event.data + "<br>";
+    };
+  };
+</script>
