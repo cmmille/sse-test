@@ -8,13 +8,16 @@
   const connectToSSE = () => {
     const source = new EventSource("/sse");
     source.onopen = (event) => {
+      document.getElementById("messages").innerHTML += "Connected to /sse" + "<br>";
       console.log("Connected to /sse");
     };
     source.onerror = (event) => {
       if (source.CLOSED) {
         console.log("Disconnected from /sse");
+        document.getElementById("messages").innerHTML += "Disconnected from /sse" + "<br>";
         source.close();
       } else {
+        document.getElementById("messages").innerHTML += "Error connecting to /sse" + "<br>";
         console.log("Error connecting to /sse", event);
       }
     };
